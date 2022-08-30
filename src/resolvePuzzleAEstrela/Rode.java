@@ -114,6 +114,8 @@ public class Rode
     {
     	ArrayList<Integer[][]> sol = new ArrayList<>();
     	
+    	sol.add(mapaAtual);
+    	
     	Rode aux = pai;
     	
     	while (aux != null)

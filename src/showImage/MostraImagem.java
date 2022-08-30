@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 import resolvePuzzleAEstrela.Rode;
+import resolvePuzzleAEstrela.SolucionaAEstrela;
 import resolvePuzzleHorizontal.Soluciona;
 
 public class MostraImagem 
@@ -57,32 +58,53 @@ public class MostraImagem
 				}
 			}
 			
+			Integer [][] iniIntegers = {{null,null,0}, {1,2,3}, {4, 6, 7}, {5, 8, 9}};
+			
 	        Integer [][] objetivo = {{null,null,0}, {1,2,3}, {4, 5, 6}, {7, 8, 9}};
 	       
-	        Soluciona s = new Soluciona(3, inicial, objetivo);
+	        SolucionaAEstrela s = new SolucionaAEstrela(3, iniIntegers, objetivo);
 	        
 	        Rode solucao = s.processa();
 	        
-	        for (Integer [][] integers : solucao.getSolucao()) 
+	        if (solucao != null)
 	        {
-	        	ArrayList<ImagemJogo> imgMostra = new ArrayList<>();
 	        	
-	        	for (int i = 1; i < objetivo.length; i++) 
-	        	{
-		        	for (int j = 0; j < objetivo.length; i++) 
+	        	ArrayList<Integer[][]> passos = solucao.getSolucao();
+	        	
+		        for (Integer [][] integers : passos) 
+		        {
+		        	ArrayList<ImagemJogo> imgMostra = new ArrayList<>();
+		        	
+		        	for (int i = 0; i < integers.length; i++) 
 		        	{
-		        		final Integer numero = integers[i][j];
-		        		
-		        		imgMostra.add(imgs.parallelStream().filter(r -> r.getPosicao() == numero)
-		    		    .findFirst()
-		    		    .orElse(null));
+			        	f1 : for (int j = 0; j < integers[0].length; j++) 
+			        	{
+			        		Integer numero = integers[i][j];
+			        		if (numero == null)
+			        		{
+			        			continue f1;
+			        		}
+			        		
+			        		if (numero == 0)
+			        		{
+			        			imgMostra.add(null);
+			        			continue f1;
+			        		}
+			        			
+			        		for (ImagemJogo posicao : imgs) 
+			        		{
+			        			if (posicao.getPosicao() == numero)
+			        				imgMostra.add(posicao);
+			        			
+							}
+						}
 					}
+		        	
+		        	tela.setImage(mi.monta(img.getHeight(), imgMostra));
+		        	
+		        	Thread.sleep(2000);
 				}
-	        	
-	        	tela.setImage(mi.monta(img.getHeight(), imgs));
-	        	
-	        	Thread.sleep(2000);
-			}
+	        }
 	        
 		}
 		catch (Exception e) 

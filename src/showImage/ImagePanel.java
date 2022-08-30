@@ -32,7 +32,7 @@ public class ImagePanel
 				   img = CortaImage.resizeImage(img, img.getHeight() - 1, img.getHeight() - 1 );
 			   
 			   pic = new JLabel(new ImageIcon(img));
-			   panel.setSize(new Dimension(400,400));
+			   panel.setSize(new Dimension(img.getHeight(),img.getHeight()));
 			   panel.add(pic);
 			
 			   f.add(panel);

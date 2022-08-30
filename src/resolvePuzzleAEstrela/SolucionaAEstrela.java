@@ -9,13 +9,13 @@ public class SolucionaAEstrela
 {
     private int tamanho;
 
-    private int[][] objetivo;
+    private Integer[][] objetivo;
     private Integer[][] inicial;
     private List<Rode> abertos;
     private List<Rode> fechados;
     
 
-    public SolucionaAEstrela(int tamanho, Integer [][] inicial, int [][] objetivo) 
+    public SolucionaAEstrela(int tamanho, Integer [][] inicial, Integer [][] objetivo) 
     {
         this.tamanho = tamanho;
         this.objetivo = objetivo;
@@ -24,13 +24,13 @@ public class SolucionaAEstrela
         this.fechados = new ArrayList<>();
     }
 
-    public int calculaFuncaoF(Rode start, int [][] objetivo)
+    public int calculaFuncaoF(Rode start, Integer [][] objetivo)
     {
-        int valor =  calcularI(start, objetivo) +  calcularH(start, objetivo);
+        int valor =  calcularI(start, objetivo) +  calcularH(start, objetivo) * 2 + start.getLevel() ;
         return valor;
     }
     
-    public int calcularI(Rode start, int[][] objetivo)
+    public int calcularI(Rode start, Integer[][] objetivo)
     {
     	int valor = 0;
     	
@@ -38,11 +38,11 @@ public class SolucionaAEstrela
         {
             for (int j = 0; j < tamanho; j++)
             {
-            	if (start.getMapaAtual()[i][j] != objetivo[i][j] )
+            	if ( start.getMapaAtual()[i][j] != objetivo[i][j] )
             	{
             		f1 : for (int j2 = 0; j2 < objetivo.length; j2++) 
             		{
-                		for (int i2 = 0; i2 < objetivo.length; i2++) 
+                		for (int i2 = 0; i2 < objetivo[i].length; i2++) 
                 		{
     						if (start.getMapaAtual()[i][j] == objetivo[j2][i2])
     						{
@@ -58,13 +58,13 @@ public class SolucionaAEstrela
     	return valor;
     }
 
-    public int calcularH(Rode start, int [][] objetivo)
+    public int calcularH(Rode start, Integer [][] objetivo)
     {
         int valor = 0;
 
-        for (int i = 0; i < tamanho; i++)
+        for (int i = 0; i < objetivo.length; i++)
         {
-            for (int j = 0; j < tamanho; j++)
+            for (int j = 0; j < objetivo[i].length; j++)
             {
                 if (start.getMapaAtual()[i][j] != objetivo[i][j])
                     valor++;
@@ -90,7 +90,7 @@ public class SolucionaAEstrela
     {
         Rode nodoInicial = new Rode(inicial, 0, 0, null);
 
-        Rode passos;
+        Rode passos = null;
         
         nodoInicial.setValorF(calculaFuncaoF(nodoInicial, objetivo));
 
@@ -100,14 +100,14 @@ public class SolucionaAEstrela
 
         while(true)
         {
-        	
             atual = abertos.get(0);
 
-            passos = atual;
-
             if(Arrays.deepEquals(atual.getMapaAtual(),objetivo))
+            {
+            	passos = atual;
                 break;
-
+            }
+            
             Rode [] filhos = atual.criaFilho();
 
             for(Rode filho : filhos)
@@ -121,10 +121,10 @@ public class SolucionaAEstrela
 
             fechados.add(atual);
             
-            if (abertos.size() > 0)
-            	abertos.remove(0);
-            else
-            	return passos;
+           	abertos.remove(0);
+            
+            if (abertos.size() == 0)
+            	break;
             
             abertos.sort(Comparator.comparing(Rode:: getValorF));
         }

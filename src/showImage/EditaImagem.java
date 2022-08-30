@@ -34,6 +34,14 @@ public class EditaImagem
 			xN += xParte;
 		}
 		
+		
+		if (partes * partes != imgs.size())
+		{
+			if (imgs.get(0) != null)
+				g2d.drawImage(imgs.get(0).getImagem(), xN, yN, null);
+			im++;
+		}
+		
 		yN += yParte;
 		xN = 0;
 		
@@ -41,7 +49,10 @@ public class EditaImagem
 		{
 			for (int j = 0; j < partes; j++) 
 			{
-				g2d.drawImage(imgs.get(im).getImagem(), xN, yN, null);
+				if (imgs.get(im) != null)
+					g2d.drawImage(imgs.get(im).getImagem(), xN, yN, null);
+				else
+					g2d.draw(new Rectangle(xN, yN, xParte, yParte));
 				
 				xN += xParte;
 				im++;
