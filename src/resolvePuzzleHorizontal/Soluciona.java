@@ -43,10 +43,10 @@ public class Soluciona
     
     public Rode processa()
     {
-        Rode nodoInicial = new Rode(inicial, 0, 0, null);
+        Rode nodoInicial = new Rode(inicial, 0, 0, null, 0);
 
         Rode passos = null;
-
+        
         abertos.add(nodoInicial);
 
         Rode atual;

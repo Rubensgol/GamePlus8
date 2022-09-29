@@ -12,21 +12,18 @@ public class SolucionaAEstrela
     private Integer[][] objetivo;
     private Integer[][] inicial;
     private List<Rode> abertos;
-    private List<Rode> fechados;
     
-
     public SolucionaAEstrela(int tamanho, Integer [][] inicial, Integer [][] objetivo) 
     {
         this.tamanho = tamanho;
         this.objetivo = objetivo;
         this.inicial = inicial;
         this.abertos = new ArrayList<>();
-        this.fechados = new ArrayList<>();
     }
 
     public int calculaFuncaoF(Rode start, Integer [][] objetivo)
     {
-        int valor =  calcularI(start, objetivo) +  calcularH(start, objetivo) * 2 + start.getLevel() ;
+        int valor =  calcularI(start, objetivo) +  calcularH(start, objetivo) + start.getQtdVezes();
         return valor;
     }
     
@@ -73,7 +70,7 @@ public class SolucionaAEstrela
 
         return valor;
     }
-
+    
     public boolean tem(List<Rode> lis, Rode atual)
     {
     	Rode achou = lis.parallelStream().filter(r -> Arrays.deepEquals(atual.getMapaAtual(),r.getMapaAtual()))
@@ -88,8 +85,8 @@ public class SolucionaAEstrela
     
     public Rode processa()
     {
-        Rode nodoInicial = new Rode(inicial, 0, 0, null);
-
+        Rode nodoInicial = new Rode(inicial, 0, 0, null, 0);
+        
         Rode passos = null;
         
         nodoInicial.setValorF(calculaFuncaoF(nodoInicial, objetivo));
@@ -112,16 +109,18 @@ public class SolucionaAEstrela
 
             for(Rode filho : filhos)
             {
-                if (filho != null && ! tem(abertos, filho) && ! tem(fechados, filho))
+                if (filho != null)
                 {
                     filho.setValorF(calculaFuncaoF(filho, objetivo));
-                    abertos.add(filho);
+                    
+                    if (! tem(abertos,filho))
+                    	abertos.add(filho);
+                    else
+                    	atual.setQtdVezes();
                 }
             }
 
-            fechados.add(atual);
-            
-           	abertos.remove(0);
+            atual.setQtdVezes();
             
             if (abertos.size() == 0)
             	break;

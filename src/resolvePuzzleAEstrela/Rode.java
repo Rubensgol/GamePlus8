@@ -9,13 +9,15 @@ public class Rode
     private int level;
     private int valorF;
     private Rode pai;
-
-    public Rode(Integer[][] mapaAtual, int level, int valorF, Rode pai) 
+    private int qtdVezes;
+    
+    public Rode(Integer[][] mapaAtual, int level, int valorF, Rode pai, int qtdVezes) 
     {
         this.mapaAtual = mapaAtual;
         this.level = level;
         this.valorF = valorF;
         this.pai = pai;
+        this.qtdVezes = qtdVezes;
     }
 
     public Rode [] criaFilho()
@@ -31,7 +33,7 @@ public class Rode
             filho = andar(moves[i]);
 
             if (filho != null)
-                filhos[i] = new Rode(filho, level + 1, 0, this);
+                filhos[i] = new Rode(filho, level + 1, 0, this, 0);
         }
 
         return filhos;
@@ -47,13 +49,13 @@ public class Rode
         if ( podeX && podeY && mapaAtual[objetivo[0]][objetivo[1]] != null)
         {
         	Integer [][] mapaTemporario = copiaMapa();
-
-           int valorMexido = mapaTemporario[objetivo[0]][ objetivo[1]];
-
-           mapaTemporario[objetivo[0]][ objetivo[1]] = mapaTemporario[posicaoEspacoBranco[0]][posicaoEspacoBranco[1]];
-           mapaTemporario[posicaoEspacoBranco[0]][posicaoEspacoBranco[1]] = valorMexido;
-            
-            return mapaTemporario;
+		
+        	int valorMexido = mapaTemporario[objetivo[0]][ objetivo[1]];
+		
+        	mapaTemporario[objetivo[0]][ objetivo[1]] = mapaTemporario[posicaoEspacoBranco[0]][posicaoEspacoBranco[1]];
+        	mapaTemporario[posicaoEspacoBranco[0]][posicaoEspacoBranco[1]] = valorMexido;
+		    
+        	return mapaTemporario;
         }
         else
             return null;
@@ -145,6 +147,16 @@ public class Rode
         return this.level;
     }
 
+    public int getQtdVezes()
+    {
+    	return qtdVezes;
+    }
+    
+    public void setQtdVezes()
+    {
+    	valorF++;
+    }
+    
     public int getValorF()
     {
         return this.valorF;

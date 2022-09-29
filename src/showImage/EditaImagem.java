@@ -9,7 +9,7 @@ import java.util.List;
 
 public class EditaImagem 
 {
-	public BufferedImage monta(int w, List<ImagemJogo> imgs)
+	private BufferedImage monta(int w, List<ImagemJogo> imgs)
 	{
 		int partes = (int) Math.sqrt(imgs.size());
 		
@@ -94,5 +94,40 @@ public class EditaImagem
 		}
 		
 		return imgs;
+	}
+
+	public BufferedImage monta(Integer[][] integers, ArrayList<ImagemJogo> imgs, int h)
+	{
+		ArrayList<ImagemJogo> imgMostra = null;
+		
+        imgMostra = new ArrayList<>();
+        	
+    	for (int i = 0; i < integers.length; i++) 
+    	{
+        	f1 : for (int j = 0; j < integers[0].length; j++) 
+        	{
+        		Integer numero = integers[i][j];
+        		
+        		if (numero == null)
+        		{
+        			continue f1;
+        		}
+        		
+        		if (numero == 0)
+        		{
+        			imgMostra.add(null);
+        			continue f1;
+        		}
+        			
+        		for (ImagemJogo posicao : imgs) 
+        		{
+        			if (posicao.getPosicao() == numero)
+        				imgMostra.add(posicao);
+        			
+				}
+			}
+        }
+        
+        return monta(h, imgMostra);
 	}
 }
